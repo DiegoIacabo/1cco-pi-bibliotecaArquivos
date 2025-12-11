@@ -82,7 +82,23 @@
                         <p>Acima de 25°C</p>
                     </div>
                 </div>
+
+                
             </div>
+            <div class="iptEstante">
+            <p class="cadastroEstante">Cadatrar Estantes</p>
+          <div class="container-iptEstante">
+            <p>Digite qual a seção</p>
+            <input class="iptEstante-input" placeholder="estante..." type="text" id="inputSecao" />
+            <p>Digite a descrição</p>
+            <input class="iptEstante-input" placeholder=""  type="text" id="inputDescricao" />
+            <div class="button-estante">
+                <button onclick="cadastrarEstante()">Cadastrar</button>
+            </div>
+
+            <div id="div_exibir"></div>
+          </div>
+        </div>
 
             <div class="cards" id="cardprateleiras">
 
@@ -95,6 +111,51 @@
 </body>
 
 <script>
+
+    idEmpresa = sessionStorage.ID_EMPRESA;
+
+    function cadastrarEstante(){
+
+    fetch("/estante/secao", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idEmpresaServer: idEmpresa,
+        secaoServer: inputSecao.value,
+        descricaoServer: inputDescricao.value,
+      }),
+    })
+      .then(function (resposta) {
+        console.log("ESTOU NO THEN DO fetch div_exibir!");
+
+        if (resposta.ok) {
+          resposta.json().then((json) => {
+            if (
+              json &&
+              json.length > 0 &&
+              json[0].descricaoClasse != undefined
+            ) {
+              div_exibir.innerHTML = json[0].descricao;
+              div_exibir.innerHTML = json[0].secao;
+            } else {
+              console.log("Sem valor na secao");
+            }
+          });
+        } else {
+          resposta
+            .text()
+            .then((text) => console.error("Detalhes do Erro no Server:", text));
+          div_exibir.innerHTML = "Erro Server";
+        }
+      })
+      .catch(function (erro) {
+        console.error("Erro no fetch da KPI:", erro);
+        div_exibir.innerHTML = "Falha";
+      });
+    
+  }
 
     function exibirprateleiras() {
         JSON.parse(sessionStorage.prateleiras).forEach(item => {

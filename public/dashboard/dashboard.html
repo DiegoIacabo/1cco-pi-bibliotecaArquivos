@@ -67,25 +67,13 @@
       <div class="dash">
         <div id="alerta"></div>
         
-        <div class="iptEstante">
-            <p class="cadastroEstante">Cadatrar Estantes</p>
-          <div class="container-iptEstante">
-            <p>Digite qual a seção</p>
-            <input class="iptEstante-input" placeholder="estante..." type="text" id="inputSecao" />
-            <p>Digite a descrição</p>
-            <input class="iptEstante-input" placeholder=""  type="text" id="inputDescricao" />
-            <div class="button-estante">
-                <button onclick="cadastrarEstante()">Cadastrar</button>
-            </div>
-
-            <div id="div_exibir"></div>
-          </div>
-        </div>
+        
 
         <div class="btns-dash" id="btnestante">
           <!-- O gráfico é chamado de acordo com o id (fk_estante) do banco  -->
         </div>
-        <div id="graficos"></div>
+        <div id="graficos">
+          </div>
       </div>
     </div>
   </body>
@@ -146,48 +134,7 @@
         
   }
 
-  function cadastrarEstante(){
-
-    fetch("/estante/secao", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idEmpresaServer: idEmpresa,
-        secaoServer: inputSecao.value,
-        descricaoServer: inputDescricao.value,
-      }),
-    })
-      .then(function (resposta) {
-        console.log("ESTOU NO THEN DO fetch div_exibir!");
-
-        if (resposta.ok) {
-          resposta.json().then((json) => {
-            if (
-              json &&
-              json.length > 0 &&
-              json[0].descricaoClasse != undefined
-            ) {
-              div_exibir.innerHTML = json[0].descricao;
-              div_exibir.innerHTML = json[0].secao;
-            } else {
-              console.log("Sem valor na secao");
-            }
-          });
-        } else {
-          resposta
-            .text()
-            .then((text) => console.error("Detalhes do Erro no Server:", text));
-          div_exibir.innerHTML = "Erro Server";
-        }
-      })
-      .catch(function (erro) {
-        console.error("Erro no fetch da KPI:", erro);
-        div_exibir.innerHTML = "Falha";
-      });
-    
-  }
+  
 
   function exibirestanteDoUsuario() {
     var estante = JSON.parse(sessionStorage.estante);
@@ -276,21 +223,21 @@
 
   //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
   //     Para ajustar o "select", ajuste o comando sql em src/models
-  function obterDadosGrafico(idestante) {
-    alterarTitulo(idestante);
+  function obterDadosGrafico(idEmpresa) {
+    alterarTitulo(idEmpresa);
 
     if (proximaAtualizacao != undefined) {
       clearTimeout(proximaAtualizacao);
     }
 
-    fetch(`/medidas/ultimas/${idestante}`, { cache: "no-store" })
+    fetch(`/estante/ultimas/${idEmpresa}`, { cache: "no-store" })
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (resposta) {
             console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
             resposta.reverse();
 
-            plotarGrafico(resposta, idestante);
+            plotarGrafico(resposta, idEmpresa);
           });
         } else {
           console.error("Nenhum dado encontrado ou erro na API");
@@ -306,7 +253,7 @@
   // Esta função *plotarGrafico* usa os dados capturados na função anterior para criar o gráfico
   // Configura o gráfico (cores, tipo, etc), materializa-o na página e,
   // A função *plotarGrafico* também invoca a função *atualizarGrafico*
-  function plotarGrafico(resposta, idestante) {
+  function plotarGrafico(resposta, idEmpresa) {
     console.log("iniciando plotagem do gráfico...");
 
     // Criando estrutura para plotar gráfico - labels
@@ -342,7 +289,7 @@
     // Inserindo valores recebidos em estrutura para plotar o gráfico
     for (i = 0; i < resposta.length; i++) {
       var registro = resposta[i];
-      labels.push(registro.momento_grafico);
+      labels.push(registro.dt_medida_grafico);
       dados.datasets[0].data.push(registro.umidade);
       dados.datasets[1].data.push(registro.temperatura);
     }
@@ -363,11 +310,11 @@
 
     // Adicionando gráfico criado em div na tela
     let myChart = new Chart(
-      document.getElementById(`myChartCanvas${idestante}`),
+      document.getElementById(`myChartCanvas${idEmpresa}`),
       config
     );
 
-    setTimeout(() => atualizarGrafico(idestante, dados, myChart), 2000);
+    setTimeout(() => atualizarGrafico(idEmpresa, dados, myChart), 2000);
   }
 
   // Esta função *atualizarGrafico* atualiza o gráfico que foi renderizado na página,
@@ -375,19 +322,19 @@
 
   //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
   //     Para ajustar o "select", ajuste o comando sql em src/models
-  function atualizarGrafico(idestante, dados, myChart) {
-    fetch(`/medidas/tempo-real/${idestante}`, { cache: "no-store" })
+  function atualizarGrafico(idEmpresa, dados, myChart) {
+    fetch(`/medidas/tempo-real/${idEmpresa}`, { cache: "no-store" })
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (novoRegistro) {
-            obterdados(idestante);
+            obterdados(idEmpresa);
             // alertar(novoRegistro, idestante);
             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
             console.log(`Dados atuais do gráfico:`);
             console.log(dados);
 
             let avisoCaptura = document.getElementById(
-              `avisoCaptura${idestante}`
+              `avisoCaptura${idEmpresa}`
             );
             avisoCaptura.innerHTML = "";
 
@@ -426,7 +373,7 @@
 
             // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
             proximaAtualizacao = setTimeout(
-              () => atualizarGrafico(idestante, dados, myChart),
+              () => atualizarGrafico(idEmpresa, dados, myChart),
               2000
             );
           });
