@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <link
-      rel="shortcut icon"
-      href="../assets/icon/favicon2.ico"
-      type="image/x-icon"
-    />
+
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,10 +13,7 @@
     <script src="./../js/alerta.js"></script>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+
 
     <!-- scripts do Chart.js - 2022-1 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -53,11 +46,7 @@
           <h3>Gráficos</h3>
         </div>
 
-        <div class="btn-nav-white">
-          <a href="./mural.html">
-            <h3>Mural de Avisos</h3>
-          </a>
-        </div>
+       
 
         <div class="btn-logout" onclick="limparSessao()">
           <h3>Sair</h3>
@@ -140,13 +129,13 @@
     var estante = JSON.parse(sessionStorage.estante);
     estante.forEach((item) => {
       document.getElementById("btnestante").innerHTML += `
-            <button class="btn-chart" onclick="exibirestante(${item.id})" id="btnestante${item.id}">${item.descricao}</button>
+            <button class="btn-chart" onclick="exibirestante(${item.id})" id="btnestante${item.id}">${item.secao}</button>
             `;
 
       document.getElementById("graficos").innerHTML += `
                 <div id="grafico${item.id}" class="display-none">
                     <h3 class="tituloGraficos">
-                        <span id="tituloestante${item.id}">${item.descricao}</span>
+                        <span id="tituloestante${item.id}">${item.secao}</span>
                     </h3>
                     <div class="graph">
                         <canvas id="myChartCanvas${item.id}"></canvas>
@@ -289,7 +278,7 @@
     // Inserindo valores recebidos em estrutura para plotar o gráfico
     for (i = 0; i < resposta.length; i++) {
       var registro = resposta[i];
-      labels.push(registro.dt_medida_grafico);
+      labels.push(registro.dt_medida);
       dados.datasets[0].data.push(registro.umidade);
       dados.datasets[1].data.push(registro.temperatura);
     }

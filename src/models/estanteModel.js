@@ -18,7 +18,7 @@ function cadastrarSecao (secao, descricao, fkEmpresa) {
   return database.executar(instrucaoSql);
 }
 
-function buscarUltimasMedidas(idEmpresa, limite_linhas) {
+function buscarUltimasMedidas(idEstante, limite_linhas) {
 
     var instrucaoSql = `SELECT 
         dht11_temperatura as temperatura, 
@@ -26,8 +26,9 @@ function buscarUltimasMedidas(idEmpresa, limite_linhas) {
                         dt_medida,
                         DATE_FORMAT(dt_medida,'%H:%i:%s') as momento_grafico
                     FROM medida
-                    WHERE fk_estante = ${idEmpresa}
-                    ORDER BY id DESC LIMIT ${limite_linhas}`;
+                    JOIN estante as e ON e.id = fk_estante
+                    WHERE e.id = ${idEstante}
+                    ORDER BY e.id DESC LIMIT ${limite_linhas}`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
