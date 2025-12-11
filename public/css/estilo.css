@@ -132,7 +132,7 @@ body {
 /* FOOTER */
 
 .footer {
-  background-color: #2b0c02;
+  background-color:#0b0103;
   height: 80px;
   color: #fff;
   display: flex;
@@ -165,12 +165,12 @@ body {
 
 .card {
   width: 40%;
-  background-color:rgb(255, 255, 255, 0.5);
+  background-color:rgba(47, 17, 1, 0.5);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  color: #69313b;
+  color: white;
   flex-direction: column;
   height: fit-content;
   padding: 20px 0;
@@ -192,7 +192,6 @@ body {
 
 .formulario span {
   font-size: 15px;
-  font-weight: 800;
 }
 
 .formulario input {
@@ -228,7 +227,8 @@ body {
   font-weight: 600;
   font-size: 18px;
   color: #fff;
-  background-color: #6b0b1b;
+  background-color:#0b0103;
+
   width: 200px;
   height: 40px;
   align-self: center;
@@ -285,7 +285,7 @@ body {
 
 input {
   margin-bottom: 10px;
-  border: 2px solid #6b0b1b;
+  border: 2px solid #33060e;
   padding: 10px;
   text-align: center;
   border-radius: 10px;
@@ -357,7 +357,7 @@ input {
 
 .body_cadLog {
   object-fit: cover;
-  background-image: url('../assets/banner_index.png');
+  background-image: url('../assets/banner-bibi.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
