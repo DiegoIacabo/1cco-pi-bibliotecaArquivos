@@ -18,9 +18,25 @@ function cadastrarSecao (secao, descricao, fkEmpresa) {
   return database.executar(instrucaoSql);
 }
 
+function buscarUltimasMedidas(idEmpresa, limite_linhas) {
+
+    var instrucaoSql = `SELECT 
+        dht11_temperatura as temperatura, 
+        dht11_umidade as umidade,
+                        dt_medida,
+                        DATE_FORMAT(dt_medida,'%H:%i:%s') as momento_grafico
+                    FROM medida
+                    WHERE fk_estante = ${idEmpresa}
+                    ORDER BY id DESC LIMIT ${limite_linhas}`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
   buscarestantePorEmpresa,
-  cadastrarSecao
+  cadastrarSecao,
+  buscarUltimasMedidas
 
 }
