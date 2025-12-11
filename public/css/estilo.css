@@ -22,7 +22,6 @@ body {
   
 }
 
-/*secao(apelido ), descricao */
 .container-login{
   display: flex;
   justify-content: center;
@@ -55,7 +54,6 @@ body {
 .navbar {
   width: 300px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   list-style: none;
   color: #e3b062;
@@ -81,8 +79,7 @@ body {
 }
 
 .banner .container {
-  justify-content: center;
-  align-items: center;
+
   height: 100%;
 }
 
