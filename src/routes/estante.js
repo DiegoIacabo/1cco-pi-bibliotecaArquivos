@@ -1,14 +1,14 @@
 var express = require("express");
 var router = express.Router();
 
-var prateleirasController = require("../controllers/prateleirasController");
+var estanteController = require("../controllers/estanteController");
 
 router.get("/:empresaId", function (req, res) {
-  prateleirasController.buscarprateleirasPorEmpresa(req, res);
+  estanteController.buscarestantePorEmpresa(req, res);
 });
 
 router.post("/cadastrar", function (req, res) {
-  prateleirasController.cadastrar(req, res);
+  estanteController.cadastrar(req, res);
 })
 
 module.exports = router;

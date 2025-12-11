@@ -1,5 +1,5 @@
 var usuarioModel = require("../models/usuarioModel");
-var prateleirasModel = require("../models/prateleirasModel");
+var estanteModel = require("../models/estanteModel");
 
 function autenticar(req, res) {
     var email = req.body.emailServer;
@@ -20,18 +20,18 @@ function autenticar(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
 
-                        prateleirasModel.buscarprateleirasPorEmpresa(resultadoAutenticar[0].empresaId)
-                            .then((resultadoprateleiras) => {
-                                if (resultadoprateleiras.length > 0) {
+                        estanteModel.buscarestantePorEmpresa(resultadoAutenticar[0].empresaId)
+                            .then((resultadoestante) => {
+                                if (resultadoestante.length > 0) {
                                     res.json({
                                         id: resultadoAutenticar[0].id,
                                         email: resultadoAutenticar[0].email,
                                         nome: resultadoAutenticar[0].nome,
                                         senha: resultadoAutenticar[0].senha,
-                                        prateleiras: resultadoprateleiras
+                                        estante: resultadoestante
                                     });
                                 } else {
-                                    res.status(204).json({ prateleiras: [] });
+                                    res.status(204).json({ estante: [] });
                                 }
                             })
                     } else if (resultadoAutenticar.length == 0) {

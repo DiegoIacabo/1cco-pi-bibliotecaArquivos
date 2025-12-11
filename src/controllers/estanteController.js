@@ -1,9 +1,9 @@
-var prateleirasModel = require("../models/prateleirasModel");
+var estanteModel = require("../models/estanteModel");
 
-function buscarprateleirasPorEmpresa(req, res) {
+function buscarestantePorEmpresa(req, res) {
   var idUsuario = req.params.idUsuario;
 
-  prateleirasModel.buscarprateleirasPorEmpresa(idUsuario).then((resultado) => {
+  estanteModel.buscarestantePorEmpresa(idUsuario).then((resultado) => {
     if (resultado.length > 0) {
       res.status(200).json(resultado);
     } else {
@@ -11,7 +11,7 @@ function buscarprateleirasPorEmpresa(req, res) {
     }
   }).catch(function (erro) {
     console.log(erro);
-    console.log("Houve um erro ao buscar os prateleiras: ", erro.sqlMessage);
+    console.log("Houve um erro ao buscar os estante: ", erro.sqlMessage);
     res.status(500).json(erro.sqlMessage);
   });
 }
@@ -28,7 +28,7 @@ function cadastrar(req, res) {
   } else {
 
 
-    prateleirasModel.cadastrar(descricao, idUsuario)
+    estanteModel.cadastrar(descricao, idUsuario)
       .then((resultado) => {
         res.status(201).json(resultado);
       }
@@ -44,6 +44,6 @@ function cadastrar(req, res) {
 }
 
 module.exports = {
-  buscarprateleirasPorEmpresa,
+  buscarestantePorEmpresa,
   cadastrar
 }

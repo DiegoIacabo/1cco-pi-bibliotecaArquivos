@@ -34,8 +34,8 @@ CREATE TABLE aviso (
 	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
 );
 
-create table prateleiras (
-/* em nossa regra de negócio, um prateleiras tem apenas um sensor */
+create table estante (
+/* em nossa regra de negócio, um estante tem apenas um sensor */
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	descricao VARCHAR(300),
 	fk_empresa INT,
@@ -52,11 +52,11 @@ create table medida (
 	lm35_temperatura DECIMAL,
 	chave TINYINT,
 	momento DATETIME,
-	fk_prateleiras INT,
-	FOREIGN KEY (fk_prateleiras) REFERENCES prateleiras(id)
+	fk_estante INT,
+	FOREIGN KEY (fk_estante) REFERENCES estante(id)
 );
 
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into prateleiras (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into prateleiras (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+insert into estante (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
+insert into estante (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);

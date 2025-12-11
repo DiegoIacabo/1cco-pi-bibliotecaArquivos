@@ -1,26 +1,26 @@
 var alertas = [];
 
-function obterdados(idprateleiras) {
-    fetch(`/medidas/tempo-real/${idprateleiras}`)
+function obterdados(idestante) {
+    fetch(`/medidas/tempo-real/${idestante}`)
         .then(resposta => {
             if (resposta.status == 200) {
                 resposta.json().then(resposta => {
 
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
 
-                    alertar(resposta, idprateleiras);
+                    alertar(resposta, idestante);
                 });
             } else {
-                console.error(`Nenhum dado encontrado para o id ${idprateleiras} ou erro na API`);
+                console.error(`Nenhum dado encontrado para o id ${idestante} ou erro na API`);
             }
         })
         .catch(function (error) {
-            console.error(`Erro na obtenção dos dados do prateleiras p/ gráfico: ${error.message}`);
+            console.error(`Erro na obtenção dos dados do estante p/ gráfico: ${error.message}`);
         });
 
 }
 
-function alertar(resposta, idprateleiras) {
+function alertar(resposta, idestante) {
     var temp = resposta[0].temperatura;
 
     var grauDeAviso = '';
@@ -39,57 +39,57 @@ function alertar(resposta, idprateleiras) {
         classe_temperatura = 'cor-alerta perigo-quente';
         grauDeAviso = 'perigo quente'
         grauDeAvisoCor = 'cor-alerta perigo-quente'
-        exibirAlerta(temp, idprateleiras, grauDeAviso, grauDeAvisoCor)
+        exibirAlerta(temp, idestante, grauDeAviso, grauDeAvisoCor)
     }
     else if (temp < limites.muito_quente && temp >= limites.quente) {
         classe_temperatura = 'cor-alerta alerta-quente';
         grauDeAviso = 'alerta quente'
         grauDeAvisoCor = 'cor-alerta alerta-quente'
-        exibirAlerta(temp, idprateleiras, grauDeAviso, grauDeAvisoCor)
+        exibirAlerta(temp, idestante, grauDeAviso, grauDeAvisoCor)
     }
     else if (temp < limites.quente && temp > limites.frio) {
         classe_temperatura = 'cor-alerta ideal';
-        removerAlerta(idprateleiras);
+        removerAlerta(idestante);
     }
     else if (temp <= limites.frio && temp > limites.muito_frio) {
         classe_temperatura = 'cor-alerta alerta-frio';
         grauDeAviso = 'alerta frio'
         grauDeAvisoCor = 'cor-alerta alerta-frio'
-        exibirAlerta(temp, idprateleiras, grauDeAviso, grauDeAvisoCor)
+        exibirAlerta(temp, idestante, grauDeAviso, grauDeAvisoCor)
     }
     else if (temp <= limites.muito_frio) {
         classe_temperatura = 'cor-alerta perigo-frio';
         grauDeAviso = 'perigo frio'
         grauDeAvisoCor = 'cor-alerta perigo-frio'
-        exibirAlerta(temp, idprateleiras, grauDeAviso, grauDeAvisoCor)
+        exibirAlerta(temp, idestante, grauDeAviso, grauDeAvisoCor)
     }
 
     var card;
 
-    if (document.getElementById(`temp_prateleiras_${idprateleiras}`) != null) {
-        document.getElementById(`temp_prateleiras_${idprateleiras}`).innerHTML = temp + "°C";
+    if (document.getElementById(`temp_estante_${idestante}`) != null) {
+        document.getElementById(`temp_estante_${idestante}`).innerHTML = temp + "°C";
     }
 
-    if (document.getElementById(`card_${idprateleiras}`)) {
-        card = document.getElementById(`card_${idprateleiras}`)
+    if (document.getElementById(`card_${idestante}`)) {
+        card = document.getElementById(`card_${idestante}`)
         card.className = classe_temperatura;
     }
 }
 
-function exibirAlerta(temp, idprateleiras, grauDeAviso, grauDeAvisoCor) {
-    var indice = alertas.findIndex(item => item.idprateleiras == idprateleiras);
+function exibirAlerta(temp, idestante, grauDeAviso, grauDeAvisoCor) {
+    var indice = alertas.findIndex(item => item.idestante == idestante);
 
     if (indice >= 0) {
-        alertas[indice] = { idprateleiras, temp, grauDeAviso, grauDeAvisoCor }
+        alertas[indice] = { idestante, temp, grauDeAviso, grauDeAvisoCor }
     } else {
-        alertas.push({ idprateleiras, temp, grauDeAviso, grauDeAvisoCor });
+        alertas.push({ idestante, temp, grauDeAviso, grauDeAvisoCor });
     }
 
     exibirCards();
 }
 
-function removerAlerta(idprateleiras) {
-    alertas = alertas.filter(item => item.idprateleiras != idprateleiras);
+function removerAlerta(idestante) {
+    alertas = alertas.filter(item => item.idestante != idestante);
     exibirCards();
 }
 
@@ -102,9 +102,9 @@ function exibirCards() {
     }
 }
 
-function transformarEmDiv({ idprateleiras, temp, grauDeAviso, grauDeAvisoCor }) {
+function transformarEmDiv({ idestante, temp, grauDeAviso, grauDeAvisoCor }) {
 
-    var descricao = JSON.parse(sessionStorage.prateleiras).find(item => item.id == idprateleiras).descricao;
+    var descricao = JSON.parse(sessionStorage.estante).find(item => item.id == idestante).descricao;
     return `
     <div class="mensagem-alarme">
         <div class="informacao">
@@ -118,7 +118,7 @@ function transformarEmDiv({ idprateleiras, temp, grauDeAviso, grauDeAvisoCor }) 
 }
 
 function atualizacaoPeriodica() {
-    JSON.parse(sessionStorage.prateleiras).forEach(item => {
+    JSON.parse(sessionStorage.estante).forEach(item => {
         obterdados(item.id)
     });
     setTimeout(atualizacaoPeriodica, 5000);

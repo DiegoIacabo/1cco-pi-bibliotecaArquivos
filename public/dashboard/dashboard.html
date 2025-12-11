@@ -28,7 +28,7 @@
 
 <!-- <body onload=" atualizarFeed()"> -->
 
-<body>
+<body onload="inciarDash()">
 
     <div class="janela">
         <div class="header-left">
@@ -66,8 +66,8 @@
             <div id="alerta">
             </div>
 
-            <div class="btns-dash" id="btnprateleiras">
-                <!-- O gráfico é chamado de acordo com o id (fk_prateleiras) do banco  -->
+            <div class="btns-dash" id="btnestante">
+                <!-- O gráfico é chamado de acordo com o id (fk_estante) do banco  -->
             </div>
             <div id="graficos">
             </div>
@@ -84,19 +84,63 @@
 
     let proximaAtualizacao;
 
-    window.onload = exibirprateleirasDoUsuario();
+    window.onload = exibirestanteDoUsuario();
 
-    function exibirprateleirasDoUsuario() {
-        var prateleiras = JSON.parse(sessionStorage.prateleiras);
-        prateleiras.forEach(item => {
-            document.getElementById("btnprateleiras").innerHTML += `
-            <button class="btn-chart" onclick="exibirprateleiras(${item.id})" id="btnprateleiras${item.id}">${item.descricao}</button>
+
+    function inciarDash(){
+
+        fetch("/estante/kpi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idUsuarioServer: idUsuarioLogado,
+      }),
+    })
+      .then(function (resposta) {
+        console.log("ESTOU NO THEN DO fetch sobreClasse!");
+
+        if (resposta.ok) {
+          resposta.json().then((json) => {
+            if (
+              json &&
+              json.length > 0 &&
+              json[0].descricaoClasse != undefined
+            ) {
+              sobreClasse.innerHTML = json[0].descricaoClasse;
+              titleBox.innerHTML = json[0].nomeClasse;
+            } else {
+              sobreClasse.innerHTML = "0";
+            }
+          });
+        } else {
+          resposta
+            .text()
+            .then((text) => console.error("Detalhes do Erro no Server:", text));
+          sobreClasse.innerHTML = "Erro Server";
+        }
+      })
+      .catch(function (erro) {
+        console.error("Erro no fetch da KPI:", erro);
+        sobreClasse.innerHTML = "Falha";
+      });
+
+    }
+
+    function exibirestanteDoUsuario() {
+
+
+        var estante = JSON.parse(sessionStorage.estante);
+        estante.forEach(item => {
+            document.getElementById("btnestante").innerHTML += `
+            <button class="btn-chart" onclick="exibirestante(${item.id})" id="btnestante${item.id}">${item.descricao}</button>
             `
 
             document.getElementById("graficos").innerHTML += `
                 <div id="grafico${item.id}" class="display-none">
                     <h3 class="tituloGraficos">
-                        <span id="tituloprateleiras${item.id}">${item.descricao}</span>
+                        <span id="tituloestante${item.id}">${item.descricao}</span>
                     </h3>
                     <div class="graph">
                         <canvas id="myChartCanvas${item.id}"></canvas>
@@ -110,23 +154,23 @@
             obterDadosGrafico(item.id)
         });
 
-        if (prateleiras.length > 0) {
-            exibirprateleiras(prateleiras[0].id)
+        if (estante.length > 0) {
+            exibirestante(estante[0].id)
         }
     }
 
-    function alterarTitulo(idprateleiras) {
-        var tituloprateleiras = document.getElementById(`tituloprateleiras${idprateleiras}`)
-        var descricao = JSON.parse(sessionStorage.prateleiras).find(item => item.id == idprateleiras).descricao;
-        tituloprateleiras.innerHTML = "Últimas medidas de Temperatura e Umidade do <span style='color: #e6005a'>" + descricao + "</span>"
+    function alterarTitulo(idestante) {
+        var tituloestante = document.getElementById(`tituloestante${idestante}`)
+        var descricao = JSON.parse(sessionStorage.estante).find(item => item.id == idestante).descricao;
+        tituloestante.innerHTML = "Últimas medidas de Temperatura e Umidade do <span style='color: #e6005a'>" + descricao + "</span>"
     }
 
-    function exibirprateleiras(idprateleiras) {
-        let todosOsGraficos = JSON.parse(sessionStorage.prateleiras);
+    function exibirestante(idestante) {
+        let todosOsGraficos = JSON.parse(sessionStorage.estante);
 
         for (i = 0; i < todosOsGraficos.length; i++) {
             // exibindo - ou não - o gráfico
-            if (todosOsGraficos[i].id != idprateleiras) {
+            if (todosOsGraficos[i].id != idestante) {
                 let elementoAtual = document.getElementById(`grafico${todosOsGraficos[i].id}`)
                 if (elementoAtual.classList.contains("display-block")) {
                     elementoAtual.classList.remove("display-block")
@@ -134,7 +178,7 @@
                 elementoAtual.classList.add("display-none")
 
                 // alterando estilo do botão
-                let btnAtual = document.getElementById(`btnprateleiras${todosOsGraficos[i].id}`)
+                let btnAtual = document.getElementById(`btnestante${todosOsGraficos[i].id}`)
                 if (btnAtual.classList.contains("btn-pink")) {
                     btnAtual.classList.remove("btn-pink")
                 }
@@ -143,12 +187,12 @@
         }
 
         // exibindo - ou não - o gráfico
-        let graficoExibir = document.getElementById(`grafico${idprateleiras}`)
+        let graficoExibir = document.getElementById(`grafico${idestante}`)
         graficoExibir.classList.remove("display-none")
         graficoExibir.classList.add("display-block")
 
         // alterando estilo do botão
-        let btnExibir = document.getElementById(`btnprateleiras${idprateleiras}`)
+        let btnExibir = document.getElementById(`btnestante${idestante}`)
         btnExibir.classList.remove("btn-white")
         btnExibir.classList.add("btn-pink")
     }
@@ -164,21 +208,21 @@
 
     //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
     //     Para ajustar o "select", ajuste o comando sql em src/models
-    function obterDadosGrafico(idprateleiras) {
+    function obterDadosGrafico(idestante) {
 
-        alterarTitulo(idprateleiras)
+        alterarTitulo(idestante)
 
         if (proximaAtualizacao != undefined) {
             clearTimeout(proximaAtualizacao);
         }
 
-        fetch(`/medidas/ultimas/${idprateleiras}`, { cache: 'no-store' }).then(function (response) {
+        fetch(`/medidas/ultimas/${idestante}`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
                     resposta.reverse();
 
-                    plotarGrafico(resposta, idprateleiras);
+                    plotarGrafico(resposta, idestante);
 
                 });
             } else {
@@ -193,7 +237,7 @@
     // Esta função *plotarGrafico* usa os dados capturados na função anterior para criar o gráfico
     // Configura o gráfico (cores, tipo, etc), materializa-o na página e, 
     // A função *plotarGrafico* também invoca a função *atualizarGrafico*
-    function plotarGrafico(resposta, idprateleiras) {
+    function plotarGrafico(resposta, idestante) {
 
         console.log('iniciando plotagem do gráfico...');
 
@@ -247,11 +291,11 @@
 
         // Adicionando gráfico criado em div na tela
         let myChart = new Chart(
-            document.getElementById(`myChartCanvas${idprateleiras}`),
+            document.getElementById(`myChartCanvas${idestante}`),
             config
         );
 
-        setTimeout(() => atualizarGrafico(idprateleiras, dados, myChart), 2000);
+        setTimeout(() => atualizarGrafico(idestante, dados, myChart), 2000);
     }
 
 
@@ -260,21 +304,21 @@
 
     //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
     //     Para ajustar o "select", ajuste o comando sql em src/models
-    function atualizarGrafico(idprateleiras, dados, myChart) {
+    function atualizarGrafico(idestante, dados, myChart) {
 
 
 
-        fetch(`/medidas/tempo-real/${idprateleiras}`, { cache: 'no-store' }).then(function (response) {
+        fetch(`/medidas/tempo-real/${idestante}`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (novoRegistro) {
 
-                    obterdados(idprateleiras);
-                    // alertar(novoRegistro, idprateleiras);
+                    obterdados(idestante);
+                    // alertar(novoRegistro, idestante);
                     console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                     console.log(`Dados atuais do gráfico:`);
                     console.log(dados);
 
-                    let avisoCaptura = document.getElementById(`avisoCaptura${idprateleiras}`)
+                    let avisoCaptura = document.getElementById(`avisoCaptura${idestante}`)
                     avisoCaptura.innerHTML = ""
 
 
@@ -302,12 +346,12 @@
                     }
 
                     // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(idprateleiras, dados, myChart), 2000);
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(idestante, dados, myChart), 2000);
                 });
             } else {
                 console.error('Nenhum dado encontrado ou erro na API');
                 // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                proximaAtualizacao = setTimeout(() => atualizarGrafico(idprateleiras, dados, myChart), 2000);
+                proximaAtualizacao = setTimeout(() => atualizarGrafico(idestante, dados, myChart), 2000);
             }
         })
             .catch(function (error) {

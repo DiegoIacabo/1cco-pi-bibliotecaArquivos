@@ -20,7 +20,7 @@
         rel="stylesheet">
 </head>
 
-<body onload="validarSessao(), exibirprateleiras(),  atualizacaoPeriodica()">
+<body onload="validarSessao(), exibirestante(),  atualizacaoPeriodica()">
 
     <div class="janela">
 
@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="cards" id="cardprateleiras">
+            <div class="cards" id="cardestante">
 
             </div>
 
@@ -97,16 +97,16 @@
 
 <script>
 
-    function exibirprateleiras() {
-        JSON.parse(sessionStorage.prateleiras).forEach(item => {
-            document.getElementById("cardprateleiras").innerHTML += `
-                    <div class="card-prateleiras">
-                        <div class="title-prateleiras">
+    function exibirestante() {
+        JSON.parse(sessionStorage.estante).forEach(item => {
+            document.getElementById("cardestante").innerHTML += `
+                    <div class="card-estante">
+                        <div class="title-estante">
                             <h1>${item.descricao}</h1>
                         </div>
-                        <div class="desc-prateleiras">
+                        <div class="desc-estante">
                         <div class="temperatura">
-                            <p id="temp_prateleiras_${item.id}">-°C</p>
+                            <p id="temp_estante_${item.id}">-°C</p>
                         </div>
                         <div class="cor-alerta" id="card_${item.id}"></div>
                     </div>
