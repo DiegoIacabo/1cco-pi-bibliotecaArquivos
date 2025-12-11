@@ -25,14 +25,17 @@ function cadastrarEstante(req, res) {
   var descricao = req.body.descricaoServer;
   var fkEmpresa = req.body.idEmpresaServer;
 
-  if (descricao == undefined) {
+
+  if (secao == undefined) {
     res.status(400).send("descricao está undefined!");
-  } else if (idUsuario == undefined) {
-    res.status(400).send("idUsuario está undefined!");
+  } else if (descricao == undefined) {
+    res.status(400).send("descricao está undefined!");
+  } else if (fkEmpresa == undefined) {
+    res.status(400).send("fkEmpresa está undefined!");
   } else {
 
 
-    estanteModel.cadastrar(secao, descricao, fkEmpresa)
+    estanteModel.cadastrarSecao(secao, descricao, fkEmpresa)
       .then((resultado) => {
         res.status(201).json(resultado);
       }

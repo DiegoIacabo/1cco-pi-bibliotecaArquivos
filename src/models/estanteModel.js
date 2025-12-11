@@ -12,7 +12,7 @@ function buscarestantePorEmpresa(fkEmpresa) {
 
 function cadastrarSecao (secao, descricao, fkEmpresa) {
   
-  var instrucaoSql = `INSERT INTO (secao, descricao, fk_empresa) estante VALUES (${secao},${descricao}, ${fkEmpresa})`;
+  var instrucaoSql = `INSERT INTO estante (secao, descricao, fk_empresa)  VALUES ('${secao}','${descricao}', ${fkEmpresa})`;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

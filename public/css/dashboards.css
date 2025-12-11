@@ -426,3 +426,54 @@ canvas {
   margin-bottom: 100px;
   cursor: pointer;
 }
+
+
+/*Vinny e Rian Dash*/
+
+.iptEstante p{
+  font-family: 'Courier New', Courier, monospace;
+  color: #ffff;
+} 
+
+
+.iptEstante {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(78, 78, 78);
+  width: 200px;
+  height: 250px;
+  border-radius: 20px;
+  padding: 20px;
+    box-shadow: 0 5px 15px rgba(196, 196, 196, 0.2);
+
+}
+
+.cadastroEstante {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+
+.conteiner-iptEstante {
+  display: flex;
+  flex-direction: column;
+}
+
+.iptEstante-input{
+  border:  1px solid #5D0424;
+}
+
+.iptEstante-input::placeholder{
+
+  text-align: left;
+}
+
