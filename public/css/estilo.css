@@ -12,7 +12,7 @@ body {
   --tamanho-banner: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-simulador: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-login: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-footer: 65px;
+  --tamanho-footer: 10px;
 }
 
 .container {
@@ -21,6 +21,14 @@ body {
   margin: auto;
 }
 
+/*secao(apelido ), descricao */
+.container-login{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4%;
+  
+}
 .header {
   height: var(--tamanho-header);
   border-bottom: 2px solid #32b9cd;
@@ -122,7 +130,7 @@ body {
 
 .footer {
   background-color: #6b0b1b;
-  height: 150px;
+  height: 80px;
   color: #fff;
   display: flex;
   font-size: 15px;
@@ -141,23 +149,25 @@ body {
 
 .login {
   height: var(--tamanho-login);
-  background-size: cover;
+ 
 }
 
 .login .container {
+  height: 100%;
+   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  flex-direction: column;
 }
 
 .card {
-  width: 50%;
-  background-color: #e5e5e5;
+  width: 40%;
+  background-color:rgb(255, 255, 255, 0.5);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  color: palevioletred;
+  color: #69313b;
   flex-direction: column;
   height: fit-content;
   padding: 20px 0;
@@ -173,6 +183,7 @@ body {
   height: 90%;
   width: 80%;
   justify-content: space-around;
+
   flex-direction: column;
 }
 
@@ -182,19 +193,20 @@ body {
 }
 
 .formulario input {
-  border: 2px solid #32b9cd;
+  border: 1px solid #5c5c5c;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 5px;
   margin: 0;
+  margin-top: 10px;
 }
 
 .formulario select {
-  border: 2px solid #32b9cd;
+  border: 1px solid #5c5c5c;
   background-color: white;
   color: gray;
   height: 36px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 5px;
   margin: 0;
 }
 
@@ -213,11 +225,11 @@ body {
   font-weight: 600;
   font-size: 18px;
   color: #fff;
-  background-color: #ED145B;
-  width: 120px;
-  height: 30px;
+  background-color: #6b0b1b;
+  width: 200px;
+  height: 40px;
   align-self: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .loading-div {
@@ -270,7 +282,7 @@ body {
 
 input {
   margin-bottom: 10px;
-  border: 2px solid #32b9cd;
+  border: 2px solid #6b0b1b;
   padding: 10px;
   text-align: center;
   border-radius: 10px;
@@ -299,18 +311,6 @@ input {
 .loading-div img {
   height: 50px;
   width: 50px;
-}
-
-/* SIMULADOR */
-
-.simulador {
-  color: white;
-}
-
-.simulador .container {
-  flex-direction: column;
-  overflow: scroll;
-  height: var(--tamanho-simulador);
 }
 
 /* ALERTA */
@@ -352,7 +352,7 @@ input {
   animation-iteration-count: infinite;
 }
 
-#body_cad {
+.body_cadLog {
   object-fit: cover;
   background-image: url('../assets/banner_login.png');
   background-size: cover;
