@@ -19,6 +19,7 @@ body {
   display: flex;
   width: 80%;
   margin: auto;
+  
 }
 
 /*secao(apelido ), descricao */
@@ -32,12 +33,14 @@ body {
 .header {
   height: var(--tamanho-header);
   border-bottom: 2px solid #32b9cd;
+  
 }
 
 .header .container {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  
 }
 
 .header a {
@@ -73,7 +76,7 @@ body {
 .banner {
   height: var(--tamanho-banner);
   color: white;
-  background-image: url('../assets/banner_index.png');
+  background-image: url('../assets/back_index.jpg');
   background-size: cover;
 }
 
@@ -129,7 +132,7 @@ body {
 /* FOOTER */
 
 .footer {
-  background-color: #6b0b1b;
+  background-color: #2b0c02;
   height: 80px;
   color: #fff;
   display: flex;
@@ -354,7 +357,7 @@ input {
 
 .body_cadLog {
   object-fit: cover;
-  background-image: url('../assets/banner_login.png');
+  background-image: url('../assets/banner_index.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
