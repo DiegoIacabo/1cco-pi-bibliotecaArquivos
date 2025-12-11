@@ -4,12 +4,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: black;
+  background-color: #0b0103;
+  scroll-behavior: smooth;
 }
 
 :root {
   --tamanho-header: 80px;
-  --tamanho-banner: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
+  --tamanho-banner: calc(110vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-simulador: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-login: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-footer: 10px;
@@ -31,7 +32,7 @@ body {
 }
 .header {
   height: var(--tamanho-header);
-  border-bottom: 2px solid #32b9cd;
+  background-color: #0b0103;
   
 }
 
@@ -44,7 +45,7 @@ body {
 
 .header a {
   text-decoration: none;
-  color: #e3b062;
+  color: white;
 }
 
 .agora {
@@ -52,15 +53,16 @@ body {
 }
 
 .navbar {
-  width: 300px;
+  width: 500px;
   display: flex;
   justify-content: space-between;
   list-style: none;
   color: #e3b062;
+  gap: 10px;
 }
 
 .titulo {
-  color: #32b9cd;
+  color: white;
   width: fit-content;
   font-weight: 500;
 }
@@ -86,8 +88,10 @@ body {
 .banner .container p {
   width: 50%;
   margin: 0;
-  padding: 0;
-  font-size: 36px;
+  padding: 10%;
+  font-size: 55px;
+  font-weight: 500;
+
 }
 
 .banner .container span {
@@ -96,35 +100,65 @@ body {
 
 /* MISSÃO VISÃO VALORES */
 
-.social {
+#sobrenos{
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 4%;
+}
+
+#sobrenos h4{
+  font-size: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+#sobrenos p{
+  width: 600px;
+  font-size: 16px;
+}
+#social {
   background-color: #e5e5e5;
   display: flex;
 }
 
-.social .container {
+#social .container {
   justify-content: center;
 }
 
 .box img {
-  width: 170px;
+  width: 90px;
+margin-top: 5%;  
 }
 
-.social .container .boxes {
+.box p{
+  width: 300px;
+}
+
+#social .container .boxes {
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 30px 0;
 }
 
-.social p {
+#social p {
   text-align: center;
 }
-
+.box h4{
+  font-size: 20px;
+}
 .box {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 30%;
+  border:solid 4px #989898;
+  border-radius: 5px;
 }
+
 
 /* FOOTER */
 
@@ -263,6 +297,7 @@ body {
   border: #ED145B 3px solid;
   padding: 10px;
   margin-right: 10%;
+
 }
 
 .card_erro #mensagem_erro {
