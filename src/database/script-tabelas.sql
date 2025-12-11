@@ -1,14 +1,6 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+CREATE DATABASE arkhaios;
 
-/*
-comandos para mysql server
-*/
-
-CREATE DATABASE aquatech;
-
-USE aquatech;
+USE arkhaios;
 
 CREATE TABLE empresa (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,28 +27,25 @@ CREATE TABLE aviso (
 );
 
 create table estante (
-/* em nossa regra de negócio, um estante tem apenas um sensor */
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
+	secao VARCHAR(10),
+    descricao VARCHAR(300),
 	fk_empresa INT,
 	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
 );
-
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
 
 create table medida (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	dht11_umidade DECIMAL,
 	dht11_temperatura DECIMAL,
-	luminosidade DECIMAL,
-	lm35_temperatura DECIMAL,
-	chave TINYINT,
-	momento DATETIME,
+	dt_medida DATETIME,
 	fk_estante INT,
 	FOREIGN KEY (fk_estante) REFERENCES estante(id)
 );
 
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into estante (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into estante (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+insert into estante (secao, fk_empresa) values ('A1', 1);
+insert into estante (secao, fk_empresa) values ('B1', 1);
+insert into estante (secao, fk_empresa) values ('A1', 2);
+insert into estante (secao, fk_empresa) values ('B1', 2);
