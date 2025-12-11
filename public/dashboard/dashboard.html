@@ -81,6 +81,7 @@
 
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+    idEmpresa = sessionStorage.ID_EMPRESA;
 
     let proximaAtualizacao;
 
@@ -89,13 +90,53 @@
 
     function inciarDash(){
 
-        fetch("/estante/kpi", {
+        fetch("/estante/secao", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        idUsuarioServer: idUsuarioLogado,
+        idEmpresaServer: idEmpresa,
+        secaoServer: inputSecao,
+        descricaoServer: inputDescricao
+      }),
+    })
+      .then(function (resposta) {
+        console.log("ESTOU NO THEN DO fetch sobreClasse!");
+
+        if (resposta.ok) {
+          resposta.json().then((json) => {
+            if (
+              json &&
+              json.length > 0 &&
+              json[0].descricaoClasse != undefined
+            ) {
+              inputDescricao.innerHTML = json[0].descricao;
+              inputEstante.innerHTML = json[0].secao;
+            } else {
+              console.log('Sem valor na secao')
+            }
+          });
+        } else {
+          resposta
+            .text()
+            .then((text) => console.error("Detalhes do Erro no Server:", text));
+          sobreClasse.innerHTML = "Erro Server";
+        }
+      })
+      .catch(function (erro) {
+        console.error("Erro no fetch da KPI:", erro);
+        sobreClasse.innerHTML = "Falha";
+      });
+
+
+       fetch("/estante/kpi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idEmpresaServer: idEmpresa,
       }),
     })
       .then(function (resposta) {
@@ -125,6 +166,10 @@
         console.error("Erro no fetch da KPI:", erro);
         sobreClasse.innerHTML = "Falha";
       });
+
+
+
+
 
     }
 

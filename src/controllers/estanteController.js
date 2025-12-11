@@ -17,9 +17,13 @@ function buscarestantePorEmpresa(req, res) {
 }
 
 
-function cadastrar(req, res) {
-  var descricao = req.body.descricao;
-  var idUsuario = req.body.idUsuario;
+
+
+function cadastrarEstante(req, res) {
+
+  var secao = req.body.secaoServer;
+  var descricao = req.body.descricaoServer;
+  var fkEmpresa = req.body.idEmpresaServer;
 
   if (descricao == undefined) {
     res.status(400).send("descricao está undefined!");
@@ -28,7 +32,7 @@ function cadastrar(req, res) {
   } else {
 
 
-    estanteModel.cadastrar(descricao, idUsuario)
+    estanteModel.cadastrar(secao, descricao, fkEmpresa)
       .then((resultado) => {
         res.status(201).json(resultado);
       }
@@ -45,5 +49,5 @@ function cadastrar(req, res) {
 
 module.exports = {
   buscarestantePorEmpresa,
-  cadastrar
+  cadastrarEstante
 }
